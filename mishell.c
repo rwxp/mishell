@@ -10,12 +10,13 @@ int main(int argc, char* argv[]) {
   while (1) {
     printf("> ");
     leer_de_teclado(256, command);
+    int x = strlen(command);
     if (strcmp(command,"salir") == 0) break;
     comando = de_cadena_a_vector(command);
     int rc = fork();
       assert(rc >= 0);
       if (rc == 0){
-        if(strcmp(comando[2], "&")==0){
+        if(command[x-1] == 38){
           for(int i=2; i >= 0; i--){
             if(i ==0){
               comando[0] = NULL;
@@ -29,9 +30,7 @@ int main(int argc, char* argv[]) {
         }
       }
       else{
-        if(strcmp(comando[2], "&") == 0){
-          printf("NO espero");
-        }else{
+        if(command[x-1] != 38){
           wait(NULL);
         }
       }
