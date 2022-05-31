@@ -7,27 +7,43 @@
 int main(int argc, char* argv[]) {
   char command[256];
   char **comando;
+  int procesos[150];
+  int procesosActivos = 0;
+
   while (1) {
     printf("> ");
     leer_de_teclado(256, command);
     int x = 0;
+    int y = 0;
     if (strcmp(command,"salir") == 0) break;
-    comando = de_cadena_a_vector(command);
-    while(comando[x]){
-      x++;
-    }
-    pid_t pid = fork();
-    if (!pid){
-      if(strcmp(comando[x-1], "&") == 0){
-        comando[x-1] = '\x0';
-        printf("%s\n", command); 
-      }   
-      execvp(comando[0], comando);
-    }
-    else{
-      if(strcmp(comando[x-1], "&") == 1){
-        wait(NULL);
+    if(strcmp(command, "tareas") == 0){
+      printf("%s\n", "Los procesos activos son:");
+      for(int i = 0; i < procesosActivos; i++){
+        printf("%d\n", procesos[i]);
       }
+    }
+    if(!strcmp(command, "tareas") == 0){
+      comando = de_cadena_a_vector(command);
+      while(comando[x]){
+        x++;
+      }
+      pid_t pid = fork();
+      if (!pid){
+        if(strcmp(comando[x-1], "&") == 0){
+          comando[x-1] = '\x0';
+        }   
+        execvp(comando[0], comando);
+      }
+      else{
+        if(strcmp(comando[x-1], "&") == 1){
+          wait(NULL);
+        }else{
+          procesos[procesosActivos] = (int) pid;
+          procesosActivos++;
+          printf("%d\n", procesosActivos);
+        }
+      }
+
     }
   }
   return 0;
