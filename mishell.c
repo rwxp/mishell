@@ -21,7 +21,9 @@ int main(int argc, char* argv[]) {
     if(strcmp(command, "tareas") == 0){
       printf("%s\n", "Los procesos activos son:");
       for(int i = 0; i < procesosActivos; i++){
-        printf("%d\n", procesos[i]);
+        if(procesos[i]){
+          printf("%d\n", procesos[i]);
+        }
       }
     }
     else if(strcmp(comando[0], "detener" ) == 0){
@@ -29,6 +31,7 @@ int main(int argc, char* argv[]) {
       for(int i = 0; i < procesosActivos; i++){
         if(pidtokill == procesos[i]){
           kill(procesos[i], SIGKILL);
+          procesos[i] = NULL;
         }
       }
     }else{
