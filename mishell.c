@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include "leercadena.h"
@@ -15,6 +16,7 @@ int main(int argc, char* argv[]) {
     leer_de_teclado(256, command);
     int x = 0;
     int y = 0;
+    comando = de_cadena_a_vector(command);
     if (strcmp(command,"salir") == 0) break;
     if(strcmp(command, "tareas") == 0){
       printf("%s\n", "Los procesos activos son:");
@@ -22,8 +24,14 @@ int main(int argc, char* argv[]) {
         printf("%d\n", procesos[i]);
       }
     }
-    if(!strcmp(command, "tareas") == 0){
-      comando = de_cadena_a_vector(command);
+    else if(strcmp(comando[0], "detener" ) == 0){
+      int pidtokill = atoi(comando[1]);
+      for(int i = 0; i < procesosActivos; i++){
+        if(pidtokill == procesos[i]){
+          kill(procesos[i], SIGKILL);
+        }
+      }
+    }else{
       while(comando[x]){
         x++;
       }
