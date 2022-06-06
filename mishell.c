@@ -17,12 +17,17 @@ int main(int argc, char* argv[]) {
     int x = 0;
     int y = 0;
     comando = de_cadena_a_vector(command);
-    if (strcmp(command,"salir") == 0) break;
+    if (strcmp(command,"salir") == 0){
+      for(int i = 0; i < procesosActivos; i++){
+        kill(procesos[i], SIGKILL);
+      }
+      break;
+    } 
     if(strcmp(command, "tareas") == 0){
-      printf("%s\n", "Los procesos activos son:");
+      printf("%s\n", "Los procesos activos son:\n    PID");
       for(int i = 0; i < procesosActivos; i++){
         if(procesos[i]){
-          printf("%d\n", procesos[i]);
+          printf("[%d]   %d\n", i,procesos[i]);
         }
       }
     }
