@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
         execvp(comando[0], comando);
       }
       else{
-        if(strcmp(comando[x-1], "&") == 1){
+        if(strcmp(comando[x-1], "&") != 0){
           wait(NULL);
         }else{
           programasprocesos[contadorprogramas] = comando[0]; 
