@@ -10,6 +10,8 @@ int main(int argc, char* argv[]) {
   char **comando;
   int procesos[150];
   int procesosActivos = 0;
+  int contadorprogramas = 0;
+  char *programasprocesos[1500];
 
   while (1) {
     printf("> ");
@@ -24,10 +26,10 @@ int main(int argc, char* argv[]) {
       break;
     } 
     if(strcmp(command, "tareas") == 0){
-      printf("%s\n", "Los procesos activos son:\n    PID");
+      printf("%s\n", "Los procesos activos son:\n        PID        command");
       for(int i = 0; i < procesosActivos; i++){
         if(procesos[i]){
-          printf("[%d]   %d\n", i,procesos[i]);
+          printf("[%d]   %d     %s\n", i,procesos[i], programasprocesos[i]);
         }
       }
     }
@@ -54,9 +56,10 @@ int main(int argc, char* argv[]) {
         if(strcmp(comando[x-1], "&") == 1){
           wait(NULL);
         }else{
+          programasprocesos[contadorprogramas] = comando[0]; 
+          contadorprogramas++;
           procesos[procesosActivos] = (int) pid;
           procesosActivos++;
-          printf("%d\n", procesosActivos);
         }
       }
 
